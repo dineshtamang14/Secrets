@@ -41,9 +41,27 @@ app.post("/register", function(req, res){
         } else {
             res.render("secrets");
         }
-    })
-})
+    });
+});
 
+app.post("/login", function(req, res){
+    const username = req.body.username;
+    const password = req.body.password;
+
+    User.findOne({email: username}, function(err, foundUser){
+        if(err){
+            console.log(err);
+        } else {
+            if(foundUser){
+                if(foundUser.password === password){
+                    res.render("secrets");
+                } else {
+                    res.send("your password is not correct.")
+                }
+            }
+        }
+    });
+});
 
 app.listen(process.env.PORT || 3000, function(){
     console.log("server is running on port 3000");
