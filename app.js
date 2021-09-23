@@ -29,7 +29,8 @@ mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true});
 const userSchema = new mongoose.Schema({
     email: String,
     password: String,
-    googleid: String
+    googleid: String,
+    secret: String
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -75,6 +76,14 @@ app.get('/auth/google/secrets',
 
 app.get("/", function(req, res){
     res.render("home");
+});
+
+app.get("/submit", function(req, res){
+    if (req.isAuthenticated()){
+        res.render("submit");
+      } else {
+        res.redirect("/login");
+      }
 });
 
 app.get("/secrets", function(req, res){
